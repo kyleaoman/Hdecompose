@@ -13,6 +13,7 @@ def neutral_frac(
         SSH_Thresh=False,
         local=False,
         EAGLE_corrections=False,
+        TNG_corrections=False,
         SFR=None,
         mu=1.22,
         gamma=4./3.,
@@ -74,12 +75,18 @@ def neutral_frac(
     Python 3.
     """
 
+    if EAGLE_corrections and TNG_corrections:
+        raise ValueError
+
     # EAGLE pre-treatment for gas temperature
-    if EAGLE_corrections:
+    if EAGLE_corrections or TNG_corrections:
         T = U.quantity.Quantity(T, copy=True)
         SFR = U.quantity.Quantity(SFR, copy=True)
         P = rho * T / (mu * proton_mass)
-        rho0 = 0.1 * U.cm ** -3 * proton_mass / fH
+        if EAGLE_corrections:
+            rho0 = 0.1 * U.cm ** -3 * proton_mass / fH
+        elif TNG_corrections:
+            rho0 = 0.13 * U.cm ** -3 * proton_mass / fH
         P0 = rho0 * T0 / (mu * proton_mass)
         P_jeans = P0 * np.power(rho / rho0, gamma)
         P_margin = np.log10(P / P_jeans)
