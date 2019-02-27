@@ -41,7 +41,9 @@ def molecular_frac(
 
     Kyle Oman c. December 2015, updated October 2017.
     """
-    P = rho * T / (mu * proton_mass)
+
+    # cast to float64 to avoid underflow
+    P = U.Quantity(rho * T / mu, dtype=np.float64) / proton_mass
 
     if EAGLE_corrections and TNG_corrections:
         raise ValueError
@@ -52,7 +54,9 @@ def molecular_frac(
             rho0 = 0.1 * U.cm ** -3 * proton_mass / fH
         elif TNG_corrections:
             rho0 = 0.13 * U.cm ** -3 * proton_mass / fH
-        P0 = rho0 * T0 / (mu * proton_mass)
+        rho0 = rho0.to(U.Msun * U.kpc ** -3)  # avoid overflow
+        # cast to float64 to avoid underflow
+        P0 = U.Quantity(rho0 * T0 / mu, dtype=np.float64) / proton_mass
         P_jeans = P0 * np.power(rho / rho0, gamma)
         P_margin = np.log10(P / P_jeans)
         SFR[P_margin > .5] = 0
