@@ -52,6 +52,8 @@ def neutral_frac(
     local:             Compute the local polytropic index.
     EAGLE_corrections: Determine which particles are on the EoS and adjust
                        values accordingly.
+    TNG_corrections:   Determine which particles have temperature < 1E4K and
+                       give them a neutral fraction of 1.
     SFR:               Particle star formation rates (required with
                        EAGLE_corrections).
     mu:                Mean molecular weight, default 1.22 (required with
@@ -79,15 +81,12 @@ def neutral_frac(
         raise ValueError
 
     # EAGLE pre-treatment for gas temperature
-    if EAGLE_corrections or TNG_corrections:
+    if EAGLE_corrections:
         T = U.quantity.Quantity(T, copy=True)
         SFR = U.quantity.Quantity(SFR, copy=True)
         # cast to float64 to avoid underflow
         P = U.Quantity(rho * T / mu, dtype=np.float64) / proton_mass
-        if EAGLE_corrections:
-            rho0 = 0.1 * U.cm ** -3 * proton_mass / fH
-        elif TNG_corrections:
-            rho0 = 0.13 * U.cm ** -3 * proton_mass / fH
+        rho0 = 0.1 * U.cm ** -3 * proton_mass / fH
         rho0 = rho0.to(U.Msun * U.kpc ** -3)  # avoid underflow
         P0 = U.Quantity(rho0 * T0 / mu, dtype=np.float64) / proton_mass
         P_jeans = P0 * np.power(rho / rho0, gamma)
@@ -236,5 +235,8 @@ def neutral_frac(
 
     if SSH_Thresh:
         f_neutral[nH > SSH_Thresh] = 1.0
+
+    if TNG_corrections:
+        f_neutral[T < 1E4 * U.K] = 1.
 
     return f_neutral
