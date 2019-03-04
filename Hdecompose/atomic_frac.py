@@ -44,8 +44,8 @@ def atomic_frac(
     local:             Compute the local polytropic index.
     EAGLE_corrections: Determine which particles are on the EoS and adjust
                        values accordingly.
-    TNG_correctiosn:   Determine which particles are colder than 10^4K and give
-                       them a neutral fraction of 1.
+    TNG_correctiosn:   Determine which particles have density > .1cm^-3 and
+                       give them a neutral fraction of 1.
     mu:                Mean molecular weight, default 1.22 (required with
                        EAGLE_corrections).
     gamma:             Polytropic index, default 4/3 (required with

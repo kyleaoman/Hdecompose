@@ -52,7 +52,7 @@ def neutral_frac(
     local:             Compute the local polytropic index.
     EAGLE_corrections: Determine which particles are on the EoS and adjust
                        values accordingly.
-    TNG_corrections:   Determine which particles have temperature < 1E4K and
+    TNG_corrections:   Determine which particles have density > .1cm^-3 and
                        give them a neutral fraction of 1.
     SFR:               Particle star formation rates (required with
                        EAGLE_corrections).
@@ -237,6 +237,6 @@ def neutral_frac(
         f_neutral[nH > SSH_Thresh] = 1.0
 
     if TNG_corrections:
-        f_neutral[T < 1E4 * U.K] = 1.
+        f_neutral[nH > 0.1 * U.cm ** -3] = 1.
 
     return f_neutral
