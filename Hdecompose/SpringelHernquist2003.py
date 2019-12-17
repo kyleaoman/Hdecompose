@@ -36,5 +36,5 @@ def auriga_correct_neutral_frac(
     mask = SFR > 0
     uh = (k_B * Th / (gamma - 1) / mu / m_p).to(U.km ** 2 / U.s ** 2)
     uc = (k_B * Tc / (gamma - 1) / mu / m_p).to(U.km ** 2 / U.s ** 2)
-    retval[mask] = ((uh - u) / (uh - uc)).to(U.dimensionless_unscaled)
+    retval[mask] = ((uh - u[mask]) / (uh - uc)).to(U.dimensionless_unscaled)
     return retval
