@@ -64,7 +64,7 @@ def molecular_frac(
             0.
         )
     elif Auriga_corrections:
-        P[SFR > 0] = P * fNeutral
+        P[SFR > 0] = (P * fNeutral)[SFR > 0]
         return 1. / (1. + np.power(P / 1.7E4 * U.K * U.cm ** -3), -.8)
     else:
         return 1. / (1. + np.power(P / (4.3E4 * U.K * U.cm ** -3), -.92))
