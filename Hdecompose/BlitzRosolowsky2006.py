@@ -9,7 +9,9 @@ def molecular_frac(
         mu=1.22,
         EAGLE_corrections=False,
         TNG_corrections=False,
+        Auriga_corrections=False,
         SFR=None,
+        fNeutral=None,
         gamma=4./3.,
         fH=0.752,
         T0=8.0E3*U.K
@@ -28,7 +30,9 @@ def molecular_frac(
     EAGLE_corrections: Determine which particles are on the EoS and adjust
                        values accordingly.
     SFR:               Particle star formation rates (required with
-                       EAGLE_corrections).
+                       EAGLE_corrections & Auriga_corrections).
+    fNeutral:          Particle neutral fraction (required with
+                       Auriga_corrections).
     gamma:             Polytropic index, default 4/3.
     fH:                Primordial hydrogen abundance, default 0.752.
     T0:                EoS critical temperature, default 8000 K.
@@ -59,5 +63,8 @@ def molecular_frac(
             1. / (1. + np.power(P / (4.3E4 * U.K * U.cm ** -3), -.92)),
             0.
         )
+    elif Auriga_corrections:
+        P[SFR > 0] = P * fNeutral
+        return 1. / (1. + np.power(P / 1.7E4 * U.K * U.cm ** -3), -.8)
     else:
         return 1. / (1. + np.power(P / (4.3E4 * U.K * U.cm ** -3), -.92))
