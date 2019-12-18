@@ -13,7 +13,7 @@ def sf_neutral_frac(
         Tc=1.E3 * U.K,
         Th=5.73E7 * U.K,
         factorEVP=573,
-        rho_thresh=1.37E-10 * U.cm ** -3
+        rho_thresh=1.37E-1 * U.cm ** -3
 ):
 
     """
@@ -36,7 +36,7 @@ def sf_neutral_frac(
     Th:                Supernova temperature (Auriga: 5.73E7K).
     factorEVP:         Supernova evaporation parameter (Auriga: 573).
     rho_thresh:        Density threshold for star formation (Auriga:
-                       1.37E-10cm^-3).
+                       1.37E-1cm^-3).
 
     Returns an array of the same shape as particle property inputs containing
     the neutral mass fractions.
@@ -49,7 +49,7 @@ def sf_neutral_frac(
     uh = (k_B * Th / mu_ionized / (gamma - 1) / m_p).to((U.km / U.s) ** 2)
 
     uSN = uh / (1 + factorEVP * np.power(
-        (rho / rho_thresh).to(U.dimensionless_unscaled), -0.8)) + uc
+        (rho / m_p / rho_thresh).to(U.dimensionless_unscaled), -0.8)) + uc
 
     retval = U.Quantity.copy(fNeutral)
     mask = SFR > 0
