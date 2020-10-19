@@ -197,6 +197,7 @@ def neutral_frac(
 
     else:
         print("Invalid redshift > 5.0 or < 0.0")
+        print("Redshift is: {:.3f}".format(redshift))
         raise ValueError
 
     lg_n0 = lg_n0_lo + dz * (lg_n0_hi - lg_n0_lo)
