@@ -53,5 +53,5 @@ def sf_neutral_frac(
 
     retval = U.Quantity.copy(fNeutral)
     mask = SFR > 0
-    retval[mask] = ((uSN - u) / (uSN - uc)).to(U.dimensionless_unscaled)
+    retval[mask] = ((uSN - u) / (uSN - uc))[mask].to(U.dimensionless_unscaled)
     return retval
