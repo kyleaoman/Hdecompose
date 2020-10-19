@@ -103,7 +103,8 @@ def neutral_frac(
             )
         ] = 1.E4 * U.K
 
-    if (redshift >= 0.0) and (redshift < 1.0):
+    if ((redshift >= 0.0) and (redshift < 1.0)) or \
+       np.isclose(redshift, 0.0, atol=1.E-3):
         dz = redshift
         if onlyA1:
             lg_n0_lo = -2.94
@@ -197,7 +198,7 @@ def neutral_frac(
 
     else:
         print("Invalid redshift > 5.0 or < 0.0")
-        print("Redshift is: {:.3f}".format(redshift))
+        print("Redshift is: {:.5e}".format(redshift))
         raise ValueError
 
     lg_n0 = lg_n0_lo + dz * (lg_n0_hi - lg_n0_lo)
