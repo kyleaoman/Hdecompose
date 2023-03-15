@@ -2,6 +2,11 @@
 Decomposition of Hydrogen content of simulation particles into neutral/ionized and atomic/molecular. Implementations of Blitz & Rosolowsky (2006) and Rahmati et al (2013).
 
 **Installation:**
+
+From pypi:
+ - 'pip install hdecompose'
+
+From github:
  - Download via web UI, or 'git clone https://github.com/kyleaoman/Hdecompose.git'
  - Install dependencies if necessary (see 'setup.py'), some may be found in other repositories by kyleaoman.
  - Global install (Linux): 
