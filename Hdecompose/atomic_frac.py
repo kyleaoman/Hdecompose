@@ -1,6 +1,6 @@
 from astropy import units as U
-from .BlitzRosolowsky2006 import calc_molecular_frac
-from .RahmatiEtal2013 import calc_neutral_frac
+from .BlitzRosolowsky2006 import molecular_frac as calc_molecular_frac
+from .RahmatiEtal2013 import neutral_frac as calc_neutral_frac
 
 
 def atomic_frac(
