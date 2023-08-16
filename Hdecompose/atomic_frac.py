@@ -8,7 +8,7 @@ def atomic_frac(
     nH=None,
     T=None,
     rho=None,
-    Habundance,
+    Habundance=None,
     onlyA1=False,
     noCol=False,
     onlyCol=False,
