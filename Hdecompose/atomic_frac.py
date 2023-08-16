@@ -1,26 +1,28 @@
 from astropy import units as U
-from .BlitzRosolowsky2006 import molecular_frac
-from .RahmatiEtal2013 import neutral_frac
+from .BlitzRosolowsky2006 import calc_molecular_frac
+from .RahmatiEtal2013 import calc_neutral_frac
 
 
 def atomic_frac(
-        redshift,
-        nH,
-        T,
-        rho,
-        Habundance,
-        onlyA1=False,
-        noCol=False,
-        onlyCol=False,
-        SSH_Thresh=False,
-        local=False,
-        EAGLE_corrections=False,
-        TNG_corrections=False,
-        SFR=None,
-        mu=1.22,
-        gamma=4./3.,
-        fH=0.752,
-        T0=8.E3 * U.K,
+    redshift=None,
+    nH=None,
+    T=None,
+    rho=None,
+    Habundance,
+    onlyA1=False,
+    noCol=False,
+    onlyCol=False,
+    SSH_Thresh=False,
+    local=False,
+    EAGLE_corrections=False,
+    TNG_corrections=False,
+    SFR=None,
+    mu=1.22,
+    gamma=4.0 / 3.0,
+    fH=0.752,
+    T0=8.0e3 * U.K,
+    neutral_frac=None,
+    molecular_frac=None,
 ):
     """
     Computes particle atomic hydrogen mass fractions. See also molecular_frac
@@ -44,7 +46,7 @@ def atomic_frac(
     local:             Compute the local polytropic index.
     EAGLE_corrections: Determine which particles are on the EoS and adjust
                        values accordingly.
-    TNG_correctiosn:   Determine which particles have density > .1cm^-3 and
+    TNG_corrections:   Determine which particles have density > .1cm^-3 and
                        give them a neutral fraction of 1.
     mu:                Mean molecular weight, default 1.22 (required with
                        EAGLE_corrections).
@@ -54,22 +56,18 @@ def atomic_frac(
                        with EAGLE_corrections).
     T0:                EoS critical temperature, default 8000 K (required with
                        EAGLE_corrections).
+    neutral_frac:      Previously computed neutral fractions can be provided.
+                       In this case can omit redshift, nH, onlyA1, noCol,
+                       onlyCol, SSH_Thresh, local, TNG_corrections, Habundance
+                       - will be ignored.
+    molecular_frac:    Previously computed molecular fractions can be provided.
 
     Returns an array of the same shape as particle property inputs containing
     the atomic (HI) mass fractions.
     """
 
-    return (1. - molecular_frac(
-        T,
-        rho,
-        EAGLE_corrections=EAGLE_corrections,
-        SFR=SFR,
-        mu=mu,
-        gamma=gamma,
-        fH=fH,
-        T0=T0
-    )) * \
-        neutral_frac(
+    if neutral_frac is None:
+        neutral_frac = calc_neutral_frac(
             redshift,
             nH,
             T,
@@ -86,5 +84,17 @@ def atomic_frac(
             fH=fH,
             Habundance=Habundance,
             T0=T0,
-            rho=rho
+            rho=rho,
         )
+    if molecular_frac is None:
+        molecular_frac = calc_molecular_frac(
+            T,
+            rho,
+            EAGLE_corrections=EAGLE_corrections,
+            SFR=SFR,
+            mu=mu,
+            gamma=gamma,
+            fH=fH,
+            T0=T0,
+        )
+    return (1.0 - molecular_frac) * neutral_frac
