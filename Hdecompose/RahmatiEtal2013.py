@@ -122,7 +122,7 @@ def neutral_frac(
             f_lo = 0.01
 
         lg_n0_hi = -2.29
-        gamma_uvb_hi = 7.3E-14
+        gamma_uvb_hi = 7.4E-13
         alpha1_hi = -2.94
         alpha2_hi = -0.90
         beta_hi = 1.21
