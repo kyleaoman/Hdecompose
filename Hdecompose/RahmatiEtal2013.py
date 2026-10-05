@@ -145,7 +145,7 @@ def neutral_frac(
         dz = redshift - 1.0
 
         lg_n0_lo = -2.29
-        gamma_uvb_lo = 7.3e-14
+        gamma_uvb_lo = 7.4e-13
         alpha1_lo = -2.94
         alpha2_lo = -0.90
         beta_lo = 1.21
