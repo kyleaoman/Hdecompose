@@ -1,1 +1,5 @@
-__version__ = "0.1.0"
+"""Provide version information."""
+
+import importlib.metadata
+
+__version__ = importlib.metadata.version("Hdecompose")
